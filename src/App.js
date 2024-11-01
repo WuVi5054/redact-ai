@@ -24,11 +24,12 @@ function App() {
         setLoading={setLoading} 
       />
       {loading && <div className="loading-spinner">Processing...</div>}
+      
       {currentDoc.original && currentDoc.sanitized && (
         <DocumentViewer originalDoc={currentDoc.original} sanitizedDoc={currentDoc.sanitized} />
       )}
       {currentDoc.stats && <DocumentStats stats={currentDoc.stats} />}
-      <DocumentControls sanitizedDoc={currentDoc.sanitized} />
+      <DocumentControls sanitizedDoc={currentDoc.sanitized}/>
 
       {/* Pagination Controls */}
       <div className="pagination-controls">
@@ -37,6 +38,9 @@ function App() {
         </button>
         <button onClick={() => setCurrentIndex((currentIndex + 1) % documents.length)} disabled={documents.length <= 1}>
           Next
+        </button>
+        <button onClick={() => setCurrentIndex(documents.length - 1)} disabled={documents.length <= 1}>
+          Latest
         </button>
       </div>
     </div>

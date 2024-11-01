@@ -37,9 +37,6 @@ def pdf_to_png(pdf_file, output_folder):
     # Close the PDF document
     pdf_document.close()
 
-# Example usage with absolute path
-#pdf_to_png("src/api/Yuyou_Liu_08.28.24.pdf", "output_folder")
-
 
 def png_to_pdf(png_file, pdf_file):
     image = Image.open(png_file)
@@ -49,8 +46,6 @@ def png_to_pdf(png_file, pdf_file):
     image.save(pdf_file, "PDF")
     print(f"Converted {png_file} to {pdf_file}")
 
-# Example usage
-#png_to_pdf("output_folder/page_1.png", "output.pdf")
 
 
 
@@ -75,8 +70,9 @@ def get_text_extraction(file_path):
 
     # Get a caption for the image. This will be a synchronously (blocking) call.
     if hasattr(file_path, 'read'):  # Check if it is a file
+        image_data = file_path.read()
         result = client.analyze(
-            image_data=file_path,
+            image_data=image_data,
             visual_features=[VisualFeatures.CAPTION, VisualFeatures.READ],
             gender_neutral_caption=True,  # Optional (default is False)
         )
@@ -89,22 +85,20 @@ def get_text_extraction(file_path):
             )
 
     # Only for printing results
-    print("Image analysis results:")
-    # Print caption results to the console
-    print(" Caption:")
-    if result.caption is not None:
-        print(f"   '{result.caption.text}', Confidence {result.caption.confidence:.4f}")
+    # print("Image analysis results:")
+    # # Print caption results to the console
+    # print(" Caption:")
+    # if result.caption is not None:
+    #     print(f"   '{result.caption.text}', Confidence {result.caption.confidence:.4f}")
 
-    # Print text (OCR) analysis results to the console
-    print(" Read:")
-    if result.read is not None:
-        for line in result.read.blocks[0].lines:
-            print(f"   Line: '{line.text}', Bounding box {line.bounding_polygon}")
-            for word in line.words:
-                print(f"     Word: '{word.text}', Bounding polygon {word.bounding_polygon}, Confidence {word.confidence:.4f}")
+    # # Print text (OCR) analysis results to the console
+    # print(" Read:")
+    # if result.read is not None:
+    #     for line in result.read.blocks[0].lines:
+    #         print(f"   Line: '{line.text}', Bounding box {line.bounding_polygon}")
+    #         for word in line.words:
+    #             print(f"     Word: '{word.text}', Bounding polygon {word.bounding_polygon}, Confidence {word.confidence:.4f}")
     return result
-
-#text_extract = get_text_extraction("output_folder/page_1.png")
 
 
 
@@ -133,60 +127,52 @@ def pii_recognition(result):
           break
         batch = documents[i : i + 5]  # Get a batch of up to 5 documents
         response = client.recognize_pii_entities(batch, language="en")
+        stats = {}
         for idx, doc in enumerate(response):
             if doc.is_error:
                 continue
 
             modified_text = documents[i + idx]  # Current document in original list
-            print("Redacted Text: {}".format(doc.redacted_text))
+            
+            # print("Redacted Text: {}".format(doc.redacted_text))
 
             # Replace each detected entity with its category
             for entity in doc.entities:
                 category_placeholder = f"[{entity.category}]"  # Placeholder e.g., "[Person]"
+                
+                if entity.category not in stats:
+                    stats[entity.category] = 1
+                else:
+                    stats[entity.category] += 1
 
                 # Perform the replacement in the original document text
                 modified_text = modified_text.replace(entity.text, category_placeholder)
 
                 # Printing
-                print("Entity: {}".format(entity.text))
-                print("\tCategory: {}".format(entity.category))
-                print("\tConfidence Score: {}".format(entity.confidence_score))
-                print("\tOffset: {}".format(entity.offset))
-                print("\tLength: {}".format(entity.length))
+                # print("Entity: {}".format(entity.text))
+                # print("\tCategory: {}".format(entity.category))
+                # print("\tConfidence Score: {}".format(entity.confidence_score))
+                # print("\tOffset: {}".format(entity.offset))
+                # print("\tLength: {}".format(entity.length))
             # Update the document with the modified text
             documents[i + idx] = modified_text
 
     # Print out final scrubbed documents
-    for doc in documents:
-        print(doc)
-    return documents
+    # for doc in documents:
+    #     print(doc)
+    return documents, stats
 
 
-
-
-#cleaned_documents = pii_recognition(text_extract)
-
-
-
-# sanitized_results = text_extract.read.blocks[0].lines
-# for i in range(len(sanitized_results)):
-#   sanitized_results[i].text = cleaned_documents[i]
-# print(cleaned_documents)
-# print(sanitized_results)
-
-
-
-
-
-def overlay_sanitized_text_on_image(input_image, output_image, result, scale_factor=1.0):
+def overlay_sanitized_text_on_image(input_image, output_image, output_folder, result, scale_factor=1.0):
     # Open the image
     if hasattr(input_image, 'read'):  # Check if it is a file
-        image = Image.open(input_image)
+        image = Image.open(input_image).convert("RGB")
     elif os.path.isfile(input_image):  # Check if it is a file path
-        image = Image.open(input_image)
+        image = Image.open(input_image).convert("RGB")
     else:
         raise ValueError("Input image must be a file path or a file-like object")
     draw = ImageDraw.Draw(image)
+    os.makedirs(output_folder, exist_ok=True)
 
     for line in result:
         # Sanitize text
@@ -200,7 +186,7 @@ def overlay_sanitized_text_on_image(input_image, output_image, result, scale_fac
         y2 = line_bbox[2]['y'] * scale_factor
 
         # Draw white rectangle over the original text
-        draw.rectangle([x0, y0, x2, y2], fill="white")
+        draw.rectangle([x0, y0, x2, y2], outline="black", fill="gray")
 
         # Calculate font size and draw sanitized text
         rect_height = y2 - y0
@@ -208,11 +194,10 @@ def overlay_sanitized_text_on_image(input_image, output_image, result, scale_fac
         font = ImageFont.load_default(font_size)
 
         # Insert sanitized text
-        draw.text((x0, y0), sanitized_line_text, fill="black", font=font)
+        draw.text((x0, y0), sanitized_line_text, fill="white", font=font)
 
     # Save the sanitized image
-    image.save(output_image)
+    # image.save(output_image)
+    output_path = os.path.join(output_folder, output_image)
+    image.save(output_path)
     print(f"Sanitized image saved as {output_image}")
-
-# Example usage
-#overlay_sanitized_text_on_image("output_folder/page_1.png", "sanitized_image.png", sanitized_results, scale_factor=1.0)

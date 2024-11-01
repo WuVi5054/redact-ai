@@ -120,14 +120,14 @@ def pii_recognition(result):
 
     # Process documents in batches of 5
     count = 0
-
+    stats = {}
     for i in range(0, len(documents), 5):
         count += 1
-        if count > 1:
+        if count > 15:
           break
         batch = documents[i : i + 5]  # Get a batch of up to 5 documents
         response = client.recognize_pii_entities(batch, language="en")
-        stats = {}
+        
         for idx, doc in enumerate(response):
             if doc.is_error:
                 continue

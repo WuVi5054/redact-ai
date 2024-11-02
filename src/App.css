@@ -21,8 +21,8 @@ body {
 }
 
 .app {
-  width: 80%;
-  max-width: 1000px;
+  width: 100vw;
+  max-width: 100%;
   margin: 40px auto;
   padding: 20px;
   background-color: white;
@@ -83,11 +83,14 @@ h1 {
 }
 
 .document-stats {
-  margin-top: 20px;
+  margin: 20px auto;
   padding: 15px;
   border-radius: 8px;
   background-color: #ffffff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  display: block;
+  justify-content: center;
+  align-items: center;
 }
 
 .document-stats h3 {

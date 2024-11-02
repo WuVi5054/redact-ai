@@ -1,71 +1,131 @@
-.App {
-  text-align: center;
+
+:root {
+  --primary-color: #0078d4;      /* Azure blue */
+  --secondary-color: #323130;    /* Darker background color */
+  --background-color: #f3f2f1;   /* Light gray background */
+  --accent-color: #005a9e;       /* Darker shade of Azure blue */
+  --text-color: #323130;         /* Primary text color */
+  --button-hover: #106ebe;       /* Hover color for primary button */
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  color: var(--text-color);
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  align-items: center;
+  min-height: 100vh;
 }
 
 .app {
+  width: 80%;
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 2em;
+  color: var(--primary-color);
   text-align: center;
+  margin-bottom: 20px;
 }
 
 .upload-container {
-  border: 2px dashed #0078d4;
-  padding: 20px;
-  margin: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed var(--primary-color);
+  border-radius: 8px;
+  padding: 40px;
+  margin: 20px auto;
+  color: var(--primary-color);
+  background-color: #ffffff;
+  transition: background-color 0.3s, color 0.3s;
   cursor: pointer;
+}
+
+.upload-container:hover {
+  background-color: var(--primary-color);
+  color: #ffffff;
 }
 
 .document-viewer {
   display: flex;
   gap: 20px;
-  padding: 20px;
+  margin-top: 20px;
 }
 
 .document-section {
-  width: 45%;
+  flex: 1;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.document-section h2 {
+  font-size: 1.25em;
+  color: var(--secondary-color);
+  margin-bottom: 10px;
 }
 
 .document-frame {
   width: 100%;
   height: 500px;
-  border: 1px solid #ddd;
+  border: none;
 }
 
-.document-stats, .document-controls {
+.document-stats {
   margin-top: 20px;
+  padding: 15px;
+  border-radius: 8px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.document-stats h3 {
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.document-stats ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  color: var(--text-color);
+}
+
+.document-stats ul li {
+  padding: 5px 0;
+  border-bottom: 1px solid var(--background-color);
+}
+
+.document-controls {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+.document-controls button {
+  padding: 12px 24px;
+  font-size: 1em;
+  color: white;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.document-controls button:hover {
+  background-color: var(--button-hover);
 }
 
 .pagination-controls {
@@ -76,15 +136,28 @@
 }
 
 .pagination-controls button {
-  padding: 8px 16px;
-  background-color: #0078d4;
+  padding: 10px 16px;
+  background-color: var(--primary-color);
   color: white;
   border: none;
+  border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.pagination-controls button:hover {
+  background-color: var(--button-hover);
 }
 
 .pagination-controls button:disabled {
   background-color: #ccc;
   cursor: not-allowed;
+}
+
+.loading-spinner {
+  font-size: 1.25em;
+  font-weight: bold;
+  color: var(--accent-color);
+  margin-top: 20px;
+  text-align: center;
 }

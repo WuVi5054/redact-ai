@@ -91,6 +91,7 @@ h1 {
   display: block;
   justify-content: center;
   align-items: center;
+  max-width: 20%;
 }
 
 .document-stats h3 {

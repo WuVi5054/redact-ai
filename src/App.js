@@ -18,7 +18,7 @@ function App() {
 
   return (
     <div className="app">
-      <h1>SafeDocs AI</h1>
+      <h1>RedactAI</h1>
       <UploadDocument 
         addDocument={addDocument} 
         setLoading={setLoading} 

@@ -1,7 +1,7 @@
 
-# SafeDocs AI
+# RedactAI
 
-SafeDocs AI is a data privacy and document management solution designed to clean sensitive personal data from documents, ensuring compliance with privacy regulations like GDPR. 
+RedactAI is a data privacy and document management solution designed to clean sensitive personal data from documents, ensuring compliance with privacy regulations like GDPR. 
 
 The project leverages Azure AI Computer Vision to perform OCR (Optical Character Recognition) and extract data from documents. Then Azure AI Language Service will then run a data sensitivity check, replacing sensitive data (such as personally identifiable information, PII) with generic placeholders. The cleaned-up version of the document will be displayed side by side with the original, allowing users to save and use the sanitized document safely in further processing without leaking sensitive information.
 
@@ -48,7 +48,7 @@ LANGUAGE_ENDPOINT=<Your Azure Language API Endpoint>
 Clone the project
 
 ```bash
-  git clone https://github.com/tonidavisj/safedocsai.git
+  git clone https://github.com/WuVi5054/redact-ai.git
 ```
 
 Install dependencies

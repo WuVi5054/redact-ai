@@ -28,8 +28,11 @@ function App() {
       {currentDoc.original && currentDoc.sanitized && (
         <DocumentViewer originalDoc={currentDoc.original} sanitizedDoc={currentDoc.sanitized} />
       )}
-      {currentDoc.stats && <DocumentStats stats={currentDoc.stats} />}
-      <DocumentControls sanitizedDoc={currentDoc.sanitized}/>
+
+      <div className="stats-and-controls">
+        {currentDoc.stats && <DocumentStats stats={currentDoc.stats} />}
+        <DocumentControls sanitizedDoc={currentDoc.sanitized}/>
+      </div>
 
       {/* Pagination Controls */}
       <div className="pagination-controls">

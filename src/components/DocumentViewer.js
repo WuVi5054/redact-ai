@@ -1,8 +1,6 @@
 // src/components/DocumentViewer.js
 import React from 'react';
 import axios from 'axios';
-
-
 import { useEffect, useState } from "react";
 
 const DocumentViewer = ({ originalDoc, sanitizedDoc }) => {
@@ -31,21 +29,23 @@ const DocumentViewer = ({ originalDoc, sanitizedDoc }) => {
 
   return (
     <div className="document-viewer">
-      <div className="document-section">
-        <h2>Original Document</h2>
-        {originalDoc ? (
-          <iframe src={originalImageData} title="Original Document" className="document-frame" />
-        ) : (
-          <p>Loading original document...</p>
-        )}
-      </div>
-      <div className="document-section">
-        <h2>Sanitized Document</h2>
-        {sanitizedDoc ? (
-          <iframe  src={sanitizedImageData} title ="Sanitized Document" className="document-frame" />
-        ) : (
-          <p>Loading sanitized document...</p>
-        )}
+      <div className="documents-container">
+        <div className="document-section">
+          <h2>Original Document</h2>
+          {originalDoc ? (
+            <iframe src={originalImageData} title="Original Document" className="document-frame" />
+          ) : (
+            <p>Loading original document...</p>
+          )}
+        </div>
+        <div className="document-section">
+          <h2>Sanitized Document</h2>
+          {sanitizedDoc ? (
+            <iframe src={sanitizedImageData} title="Sanitized Document" className="document-frame" />
+          ) : (
+            <p>Loading sanitized document...</p>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -53,19 +53,3 @@ const DocumentViewer = ({ originalDoc, sanitizedDoc }) => {
 
 
 export default DocumentViewer;
-
-
-// const DocumentViewer = ({ originalDoc, sanitizedDoc }) => (
-//   <div className="document-viewer">
-//     <div className="document-section">
-//       <h2>Original Document</h2>
-//       <iframe src={originalDoc} title="Original Document" className="document-frame" />
-//     </div>
-//     <div className="document-section">
-//       <h2>Sanitized Document</h2>
-//       <iframe src={sanitizedDoc} title="Sanitized Document" className="document-frame" />
-//     </div>
-//   </div>
-// );
-
-// export default DocumentViewer;

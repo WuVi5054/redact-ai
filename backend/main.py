@@ -44,9 +44,9 @@ counter = itertools.count(start=1)  # Starting from 1
 async def process_file(file: UploadFile = File(...)):
     output_folder = "static"
     unique_id = next(counter)
-    output_image = f"sanitized_image_{unique_id}.png"
-    output_pdf = f"sanitized_output_{unique_id}.pdf"
+    base_name = os.path.splitext(file.filename)[0]
     if file.filename.endswith(".png"):
+        output_image = f"{base_name}_sanitized_{unique_id}.png"
         # Process PNG file
         text_extract = get_text_extraction(file.file)
         cleaned_documents, stats = pii_recognition(text_extract)
@@ -60,6 +60,8 @@ async def process_file(file: UploadFile = File(...)):
             "stats": stats
         }
     elif file.filename.endswith(".pdf"):
+        output_image = f"{base_name}_sanitized_{unique_id}.png"
+        output_pdf = f"{base_name}_sanitized_{unique_id}.pdf"
         # Convert PDF to PNG
         pdf_to_png(file.file, output_folder)
         # Process PNG file

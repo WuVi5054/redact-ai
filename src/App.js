@@ -138,7 +138,7 @@ function App() {
                     </td>
                     <td>
                       <div className="document-actions">
-                      <DocumentControls sanitizedDoc={currentDoc.sanitized}/>
+                      <DocumentControls sanitizedDoc={doc.sanitized}/>
                       </div>
                     </td>
                   </tr>

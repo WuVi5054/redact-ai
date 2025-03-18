@@ -100,4 +100,30 @@ async def download_file(file_name: str):
     # Return file response to download
     return FileResponse(file_path)
 
+@app.post("/download_all")
+async def download_all_files(files: list[UploadFile]):
+    # Create a temporary directory for zip file
+    import tempfile
+    import zipfile
+    from datetime import datetime
+    
+    # Generate unique zip filename
+    zip_filename = f"sanitized_documents_{datetime.now().strftime('%Y%m%d_%H%M%S')}.zip"
+    
+    # Create temporary zip file
+    with tempfile.NamedTemporaryFile(delete=False, suffix='.zip') as temp_zip:
+        with zipfile.ZipFile(temp_zip.name, 'w') as archive:
+            # Add each file to the zip archive
+            for file in files:
+                file_path = os.path.join(UPLOAD_DIRECTORY, file.filename)
+                if os.path.exists(file_path):
+                    archive.write(file_path, file.filename)
+        
+        # Return the zip file
+        return FileResponse(
+            temp_zip.name,
+            media_type='application/zip',
+            filename=zip_filename
+        )
+
 

@@ -177,6 +177,10 @@ def overlay_sanitized_text_on_image(input_image, output_image, output_folder, re
     for line in result:
         # Sanitize text
         sanitized_line_text = line.text
+        # Skip lines without PII placeholders
+        if '[' not in sanitized_line_text or ']' not in sanitized_line_text:
+            continue
+
         line_bbox = line.bounding_polygon
 
         # Convert bounding box coordinates
@@ -190,7 +194,7 @@ def overlay_sanitized_text_on_image(input_image, output_image, output_folder, re
 
         # Calculate font size and draw sanitized text
         rect_height = y2 - y0
-        font_size = int(min(rect_height * 0.8, 30))  # Set font size based on rectangle height
+        font_size = int(min(rect_height * 0.8, 24))  # Set font size based on rectangle height
         font = ImageFont.load_default(font_size)
 
         # Insert sanitized text

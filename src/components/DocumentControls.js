@@ -27,7 +27,7 @@ const DocumentControls = ({ sanitizedDoc }) => {
   return (
     <div className="document-controls">
       <button onClick={handleDownload} disabled={!sanitizedDoc}>
-        Download Current Document
+        Download
       </button>
     </div>
   );

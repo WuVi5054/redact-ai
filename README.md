@@ -3,7 +3,7 @@
 
 RedactAI is a data privacy and document management solution designed to clean sensitive personal data from documents, ensuring compliance with privacy regulations like GDPR. 
 
-The project leverages Azure AI Computer Vision to perform OCR (Optical Character Recognition) and extract data from documents. Then Azure AI Language Service will then run a data sensitivity check, replacing sensitive data (such as personally identifiable information, PII) with generic placeholders. The cleaned-up version of the document will be displayed side by side with the original, allowing users to save and use the sanitized document safely in further processing without leaking sensitive information.
+The project leverages Azure AI Computer Vision to perform OCR (Optical Character Recognition) and extract data from documents. Then Azure AI Language Service will then run a data sensitivity check, replacing sensitive data (such as personally identifiable information, PII) with generic placeholders. The cleaned-up version of the document will be displayed side by side with the original, allowing users to save and use the sanitized document safely in further processing without leaking sensitive information. Then the cleaned-up document will be saved to Azure Blob Storage for further processing.
 
 This project ensures that sensitive information is protected while maintaining document usability for tasks like analysis, AI training, or reporting.
 
@@ -13,11 +13,13 @@ This project ensures that sensitive information is protected while maintaining d
 - Sanitizing PII Data: Azure AI Language Services detects and scrubs PII in the extracted text, replacing sensitive information in the document.
 - Side-by-Side Comparison: Displays both original and sanitized documents for user comparison.
 - React and FastAPI Web Application: Provides an interactive interface for seamless backend and frontend communication.
+- Data Storage: Stores the cleaned-up documents in Azure Blob Storage for future use.
 ## Tech Stack
 
 
 - Azure AI Computer Vision
 - Azure AI Language Services
+- Azure Blob Storage
 - React
 - FastAPI
 ## Demo
@@ -32,7 +34,7 @@ To run this project, add the following environment variables to your .env file. 
 - Azure AI Services:
     - Language Service
     - Computer Vision
-
+    - Blob Storage
 
 
 ```
@@ -40,6 +42,8 @@ VISION_KEY=<Your Azure Vision API Key>
 VISION_ENDPOINT=<Your Azure Vision API Endpoint>
 LANGUAGE_KEY=<Your Azure Language API Key>
 LANGUAGE_ENDPOINT=<Your Azure Language API Endpoint>
+AZURE_BLOB_CONNECTION_STRING=<Your Azure Blob Connection String>
+AZURE_BLOB_CONTAINER_NAME=<Your Azure Blob Container Name>
 ```
 
 

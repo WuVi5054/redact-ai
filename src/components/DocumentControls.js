@@ -24,10 +24,25 @@ const DocumentControls = ({ sanitizedDoc }) => {
     }
   };
 
+  const handleUploadToBlob = async () => {
+    if (sanitizedDoc) {
+      try {
+        await axios.post(`http://127.0.0.1:8000/upload-to-blob/?filename=${sanitizedDoc}`);
+        alert('Successfully uploaded to Azure Blob Storage');
+      } catch (error) {
+        console.error('Error uploading to blob storage:', error);
+        alert('Failed to upload to Azure Blob Storage');
+      }
+    }
+  };
+
   return (
     <div className="document-controls">
       <button onClick={handleDownload} disabled={!sanitizedDoc}>
         Download
+      </button>
+      <button onClick={handleUploadToBlob} disabled={!sanitizedDoc} className="upload-blob-btn">
+        Upload to Cloud
       </button>
     </div>
   );

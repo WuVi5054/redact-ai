@@ -145,3 +145,24 @@ async def download_all_files(files: list[UploadFile]):
         )
 
 
+@app.post("/upload-to-blob/")
+async def upload_to_blob(filename: str):
+    try:
+        # Get file from static directory
+        file_path = os.path.join(UPLOAD_DIRECTORY, filename)
+        if not os.path.exists(file_path):
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        # Upload file to blob storage
+        blob_client = container_client.get_blob_client(filename)
+        with open(file_path, "rb") as data:
+            blob_client.upload_blob(data, overwrite=True)
+        
+        return {
+            "message": "File uploaded successfully",
+            "blob_name": filename
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+

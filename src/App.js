@@ -107,7 +107,26 @@ function App() {
                     }
                   }}
                 >
-                  Download All
+                  <i className="fas fa-download"></i> Download All
+                </button>
+                <button
+                  className="action-button primary"
+                  onClick={async () => {
+                    try {
+                      // Upload each document to Azure Blob Storage
+                      for (const doc of documents) {
+                        await fetch(`http://127.0.0.1:8000/upload-to-blob/?filename=${doc.sanitized}`, {
+                          method: 'POST'
+                        });
+                      }
+                      alert('Successfully uploaded all documents to Azure Blob Storage');
+                    } catch (error) {
+                      console.error('Error uploading files to blob storage:', error);
+                      alert('Failed to upload files to Azure Blob Storage. Please try again.');
+                    }
+                  }}
+                >
+                  <i className="fas fa-cloud-upload-alt"></i> Upload to Cloud
                 </button>
               </div>
             </div>

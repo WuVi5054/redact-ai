@@ -62,10 +62,10 @@ async def process_file(file: UploadFile = File(...)):
             sanitized_results[i].text = cleaned_documents[i]
         overlay_sanitized_text_on_image(file.file, output_image, output_folder, sanitized_results, scale_factor=1.0)
         
-        # Upload sanitized image to Azure Blob Storage
-        blob_client = container_client.get_blob_client(output_image)
-        with open(os.path.join(output_folder, output_image), "rb") as data:
-            blob_client.upload_blob(data, overwrite=True)
+        # Upload sanitized image to Azure Blob Storage during after processing if you would like
+        # blob_client = container_client.get_blob_client(output_image)
+        # with open(os.path.join(output_folder, output_image), "rb") as data:
+        #     blob_client.upload_blob(data, overwrite=True)
         return {
             "sanitized_file_name": output_image,
             "sanitized_file_path": os.path.join(output_folder, output_image),
@@ -84,10 +84,10 @@ async def process_file(file: UploadFile = File(...)):
             sanitized_results[i].text = cleaned_documents[i]
         overlay_sanitized_text_on_image(os.path.join(output_folder, "page_1.png"), output_image, output_folder, sanitized_results, scale_factor=1.0)
         png_to_pdf(os.path.join(output_folder, output_image), os.path.join(output_folder,output_pdf))
-        # Upload sanitized PDF to Azure Blob Storage
-        blob_client = container_client.get_blob_client(output_pdf)
-        with open(os.path.join(output_folder, output_pdf), "rb") as data:
-            blob_client.upload_blob(data, overwrite=True)
+        # Upload sanitized image to Azure Blob Storage during after processing if you would like
+        # blob_client = container_client.get_blob_client(output_pdf)
+        # with open(os.path.join(output_folder, output_pdf), "rb") as data:
+        #     blob_client.upload_blob(data, overwrite=True)
         return {
             "sanitized_file_name": output_pdf,
             "sanitized_file_path": os.path.join(output_folder, output_pdf),
